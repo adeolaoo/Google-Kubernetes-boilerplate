@@ -1,0 +1,196 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('gitcheckout') {
+            steps {
+                git branch: 'main', credentialsId: 'git-cred', url: 'https://github.com/adeolaoo/Google-Kubernetes-boilerplate.git'
+            }
+        }
+        
+        stage('currencyservice') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/lib/jenkins/workspace/Project/app/currencyservice/') {
+                            sh "docker build -t dede1443/currencyservice:latest . "
+                            sh "docker push dede1443/currencyservice:latest  "
+                            sh "docker rmi dede1443/currencyservice:latest  "
+                            
+                            
+}
+}
+}
+            }
+        }
+        
+        stage('loadgenerator') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/lib/jenkins/workspace/Project/app/loadgenerator') {
+                            sh "docker build -t dede1443/loadgenerator:latest . "
+                            sh "docker push dede1443/loadgenerator:latest  "
+                            sh "docker rmi dede1443/loadgenerator:latest  "
+                            
+                            
+}
+}
+}
+            }
+        }
+        stage('productcatalogservice') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/lib/jenkins/workspace/Project/app/productcatalogservice') {
+                            sh "docker build -t dede1443/productcatalogservice:latest . "
+                            sh "docker push dede1443/productcatalogservice:latest  "
+                            sh "docker rmi dede1443/productcatalogservice:latest  "
+                            
+                            
+}
+}
+}
+            }
+        }
+        
+        stage('checkoutservice') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/lib/jenkins/workspace/Project/app/checkoutservice') {
+                            sh "docker build -t dede1443/checkoutservice:latest . "
+                            sh "docker push dede1443/checkoutservice:latest  "
+                            sh "docker rmi dede1443/checkoutservice:latest  "
+                            
+                            
+}
+}
+}
+            }
+        }
+        
+        stage('shippingservice') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/lib/jenkins/workspace/Project/app/shippingservice') {
+                            sh "docker build -t dede1443/shippingservice:latest . "
+                            sh "docker push dede1443/shippingservice:latest  "
+                            sh "docker rmi dede1443/shippingservice:latest  "
+                            
+                            
+}
+}
+}
+            }
+        }
+        
+        stage('cartservice') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/lib/jenkins/workspace/Project/app/cartservice/src') {
+                            sh "docker build -t dede1443/cartservice:latest . "
+                            sh "docker push dede1443/cartservice:latest  "
+                            sh "docker rmi dede1443/cartservice:latest  "
+                            
+                            
+}
+}
+}
+            }
+        }
+        
+        stage('emailservice') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/lib/jenkins/workspace/Project/app/emailservice') {
+                            sh "docker build -t dede1443/emailservice:latest . "
+                            sh "docker push dede1443/emailservice:latest  "
+                            sh "docker rmi dede1443/emailservice:latest  "
+                            
+                            
+}
+}
+}
+            }
+        }
+        
+        stage('paymentservice') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/lib/jenkins/workspace/Project/app/paymentservice') {
+                            sh "docker build -t dede1443/paymentservice:latest . "
+                            sh "docker push dede1443/paymentservice:latest  "
+                            sh "docker rmi dede1443/paymentservice:latest  "
+                            
+                            
+}
+}
+}
+            }
+        }
+        
+        stage('frontend') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/lib/jenkins/workspace/Project/app/frontend') {
+                            sh "docker build -t dede1443/frontend:latest . "
+                            sh "docker push dede1443/frontend:latest  "
+                            sh "docker rmi dede1443/frontend:latest  "
+                            
+                            
+}
+}
+}
+            }
+        }
+        
+        stage('recommendationservice') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/lib/jenkins/workspace/Project/app/recommendationservice') {
+                            sh "docker build -t dede1443/recommendationservice:latest . "
+                            sh "docker push dede1443/recommendationservice:latest  "
+                            sh "docker rmi dede1443/recommendationservice:latest  "
+                            
+                            
+}
+}
+}
+            }
+        }
+        
+        stage('adservice') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/lib/jenkins/workspace/Project/app/adservice') {
+                            sh "docker build -t dede1443/adservice:latest . "
+                            sh "docker push dede1443/adservice:latest  "
+                            sh "docker rmi dede1443/adservice:latest  "
+                            
+                            
+}
+}
+}
+            }
+        }
+        
+        stage('deploy to k8s') {
+            steps {
+                script{
+                    withKubeConfig(caCertificate: '', clusterName: 'project2', contextName: '', credentialsId: 'k8s-cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://C87154950DC01CFA82AAC8A4FB2D4726.gr7.ca-central-1.eks.amazonaws.com') {
+                            sh " kubectl apply -f kubernetes-manifests.yaml"
+}
+                }
+            }
+        }
+    }
+}
